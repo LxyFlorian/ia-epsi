@@ -60,12 +60,12 @@ export default {
   background: url('~@/assets/carrefour.png') no-repeat 640px 210px;
 }
 .form {
-  margin-left: 40%;
-  height: 100vh;
+  margin-left: 765px;
+  height: 940px;
 }
 
 .text {
-    margin-left: -15%;
+    margin-left: -5px;
 }
 
 </style>
