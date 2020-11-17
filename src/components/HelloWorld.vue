@@ -1,15 +1,5 @@
 <template>
   <div class="hello">
-    <div>
-      <b-jumbotron
-        class="jumbTest"
-        header="BootstrapVue"
-        lead="Bootstrap v4 Components for Vue.js 2"
-      >
-        <p>For more information visit website</p>
-        <b-button variant="outline-secondary">MORE INFO</b-button>
-      </b-jumbotron>
-    </div>
   </div>
 </template>
 
