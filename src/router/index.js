@@ -19,6 +19,13 @@ const routes = [
     component: function() {
       return import(/* webpackChunkName: "about" */ "../views/About.vue");
     }
+  },
+  {
+    path: "/video",
+    name: "Video",
+    component: function() {
+      return import("../views/Video.vue");
+    }
   }
 ];
 
