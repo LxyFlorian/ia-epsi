@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"plantuml.exportSubFolder": false,
+		"editor.formatOnSave": true,
+		"prettier.useTabs": true,
+		"prettier.tabWidth": 4,
+		"prettier.singleQuote": true,
+		"prettier.semi": true,
+		"prettier.printWidth": 125,
+		"prettier.bracesSpacing": true,
+		"prettier.bracketSpacing": true,
+		"prettier.arrowParens": "always",
+		"git.ignoreLimitWarning": true
+	}
+}
