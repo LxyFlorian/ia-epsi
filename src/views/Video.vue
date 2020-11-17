@@ -9,3 +9,10 @@
     </div>
   </div>
 </template>
+
+<style>
+#app {
+  background: none;
+}
+
+</style>

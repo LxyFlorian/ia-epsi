@@ -56,6 +56,9 @@ export default {
 </script>
 
 <style>
+#app {
+  background: url('~@/assets/carrefour.png') no-repeat center;
+}
 .form {
   margin-left: 40%;
   height: 100vh;
