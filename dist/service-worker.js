@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ia-epsi/precache-manifest.6855304b0e9fac5df396917825d36acb.js"
+  "/ia-epsi/precache-manifest.3842bd453556a723b279082cff2f5e1c.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "ia-epsi"});
