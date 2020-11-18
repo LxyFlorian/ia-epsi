@@ -69,6 +69,7 @@
 #app {
   background: none;
 }
+</style>
 
 h1, h2 {
   font-family: Montserrat;
