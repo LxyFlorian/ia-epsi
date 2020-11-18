@@ -9,7 +9,7 @@
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
             <b-nav-item to="/">Accueil</b-nav-item>
-            <b-nav-item to="video">Vidéo</b-nav-item>
+            <b-nav-item to="/form">Simulation</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
