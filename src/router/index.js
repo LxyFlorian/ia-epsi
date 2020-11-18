@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+//import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -8,7 +8,9 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: function() {
+      return import("../views/Video.vue");
+    }
   },
   {
     path: "/about",
@@ -21,10 +23,10 @@ const routes = [
     }
   },
   {
-    path: "/video",
-    name: "Video",
+    path: "/form",
+    name: "Form",
     component: function() {
-      return import("../views/Video.vue");
+      return import("../views/Home.vue");
     }
   }
 ];

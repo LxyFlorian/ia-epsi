@@ -270,6 +270,7 @@ export default {
 .form {
   margin-left: 765px;
   height: 940px;
+  text-align: center;
 }
 
 .text {
