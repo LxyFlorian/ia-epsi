@@ -1,6 +1,70 @@
 <template>
   <div>
   <b-form inline class="form">
+    <!--/////////////////////////////////////////// AC PART /////////////////////////////////////////// -->
+    <div class="base-timerAC">
+      <svg
+      class="base-timer _svg"
+      viewBox="0 0 100 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g class="base-timer _circle">
+        <circle
+          class="base-timer _path-elapsed"
+          cx="50"
+          cy="50"
+          r="46.5"
+        />
+        <path
+          class="base-timer _path-remaining"
+          :style="AC_color"
+          d="
+            M 50, 50
+            m -45, 0
+            a 45,45 0 1,0 90,0
+            a 45,45 0 1,0 -90,0
+          "></path>
+      </g>
+    </svg>
+    <span class="base-timer _labelAC">
+      {{ formattedTimeAC }}
+    </span>
+    </div>
+    <span class="timerTextAC"> Feu Voie A-C</span>
+    
+    <!--/////////////////////////////////////////// BD PART /////////////////////////////////////////// -->
+
+    <div class="base-timerBD">
+      <svg
+      class="base-timer _svg"
+      viewBox="0 0 100 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g class="base-timer _circle">
+        <circle
+          class="base-timer _path-elapsed"
+          cx="50"
+          cy="50"
+          r="46.5"
+        />
+        <path
+          class="base-timer _path-remaining"
+          :style="BD_color"
+          d="
+            M 50, 50
+            m -45, 0
+            a 45,45 0 1,0 90,0
+            a 45,45 0 1,0 -90,0
+          "></path>
+      </g>
+    </svg>
+    <span class="base-timer _labelBD">
+      {{ formattedTimeBD }}
+    </span>
+    </div>
+    <span class="timerTextBD"> Feu Voie B-D</span>
+
+
     <div class="VoieB" style="margin-top: -760px; margin-left: 130px">
       <label class= "text" for="inline-form-input-number1">Nombre de Véhicules </label> <br><br><br>
     
@@ -74,18 +138,128 @@
 export default {
   data() {
     return {
-      voieA: null,
-      voieB: null,
-      voieC: null,
-      voieD: null,
+      carsA: null,
+      carsB: null,
+      carsC: null,
+      carsD: null,
 
       greenA: true,
       greenB: false,
       greenC: true,
-      greenD: false
-    }
-  }
+      greenD: false,
 
+      AC_color: '',
+      BD_color: '',
+      green: 'rgb(65, 184, 131)',
+      red: 'rgb(211, 14, 14 )',
+       
+      timeLimitAC: 35,
+      timePassedAC: 0,
+      timerIntervalAC: null,
+
+      timeLimitBD: 40,
+      timePassedBD: 0,
+      timerIntervalBD: null,
+    }
+  },
+   mounted() {
+    this.startTimerAC();
+    this.startTimerBD();
+  },
+
+  computed: {
+
+    // ///////////////////////////////////////////  COUNT A -> C  ///////////////////////////////////////////////// 
+
+
+    formattedTimeAC() {
+      const timeAC = this.timeAC
+      
+      if (timeAC == 0) {
+        return '0:00'
+      }
+
+
+      const minutes = Math.floor(timeAC / 60)
+
+      let seconds = timeAC % 60
+
+      if (seconds < 10) {
+        seconds = `0${seconds}`
+      }
+
+
+      return `${minutes}:${seconds}`
+    },
+
+    timeAC() {
+      if(this.timePassedAC > this.timeLimitAC) {
+        return 0
+      }
+      return this.timeLimitAC - this.timePassedAC
+    },
+
+    // ///////////////////////////////////////////  COUNT B -> D  ///////////////////////////////////////////////// 
+
+    formattedTimeBD() {
+      const timeBD = this.timeBD
+      
+      if (timeBD == 0) {
+        return '0:00'
+      }
+
+
+      const minutes = Math.floor(timeBD / 60)
+
+      let seconds = timeBD % 60
+
+      if (seconds < 10) {
+        seconds = `0${seconds}`
+      }
+
+      return `${minutes}:${seconds}`
+    },
+
+    timeBD() {
+      if(this.timePassedBD > this.timeLimitBD) {
+        return 0
+      }
+      return this.timeLimitBD - this.timePassedBD
+    },
+  },
+
+  methods: {
+    startTimerAC() {
+      if(this.greenA && this.greenC) {
+        this.AC_color = {
+          "stroke": `${this.green}`
+        }
+      }
+      else {
+        this.AC_color = {
+          "stroke": `${this.red}`
+        }
+      }
+
+
+      if(this.greenB && this.greenB) {
+        this.BD_color = {
+          "stroke": `${this.green}`
+        }
+      }
+      else {
+        this.BD_color = {
+          "stroke": `${this.red}`
+        }
+      }
+
+      this.timerIntervalAC = setInterval(() => (this.timePassedAC += 1), 1000);
+    },
+
+    startTimerBD() {
+      this.timerIntervalBD = setInterval(() => (this.timePassedBD += 1), 1000);
+    }
+  },
 }
 </script>
 
@@ -99,12 +273,93 @@ export default {
 }
 
 .text {
-    margin-left: -5px;
+  margin-left: -5px;
 }
+
+.timerTextAC {
+  position: absolute;
+  margin-top: 350px;
+  margin-left: -110px;
+}
+
+.timerTextBD {
+  position: absolute;
+  margin-top: -400px;
+  margin-left: 0px;
+}
+
 
 .light {
   width: 22px;
   position: absolute;
 }
+
+.timer1 {
+  position: absolute;
+  margin-top: -500px;
+}
+
+/* Sets the containers height and width */
+.base-timerAC {
+  position: absolute;
+  margin-top: 200px;
+  margin-left: -120px;
+  width: 100px;
+  height: 100px;
+}
+
+.base-timerBD {
+  position: absolute;
+  margin-top: -550px;
+  margin-left: 0px;
+  width: 100px;
+  height: 100px;
+}
+
+._circle {
+    fill: none;
+    stroke: none;
+  }
+._path-elapsed {
+    stroke-width: 7px;
+    stroke:grey;
+}
+
+._labelAC {
+    position: absolute;    
+    
+    width: 100px;
+    height: 100px;
+    margin-top: -100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+  }
+
+  ._labelBD {
+    position: absolute;    
+    
+    width: 100px;
+    height: 100px;
+    margin-left: -5px;
+    margin-top: -100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+  }
+
+  ._path-remaining {
+    stroke-width: 7px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+  }
+
+  ._svg {
+    transform: scaleX(-1);
+  }
 
 </style>
