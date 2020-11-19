@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button class="simulate" @click="getTiming">Simuler</button>
+    <b-button variant="info" class="simulate" @click="getTiming"
+      >Simuler</b-button
+    >
 
     <b-form inline class="form">
       <!--/////////////////////////////////////////// AC PART /////////////////////////////////////////// -->
@@ -220,8 +222,7 @@ export default {
       next4 : [ 6 , 5 , 9 , 6],
     };
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {
     // ///////////////////////////////////////////  COUNT A -> C  /////////////////////////////////////////////////
 
@@ -344,6 +345,15 @@ export default {
   },
 
   methods: {
+    makeToast(variant, append = false, title, text) {
+      this.$bvToast.toast(text, {
+        title: title,
+        autoHideDelay: 5000,
+        appendToast: append,
+        variant: variant,
+        solid: true,
+      });
+    },
     getTiming: function() {
       if (this.carsA && this.carsD && this.carsB && this.carsC) {
         HTTP.get(
@@ -387,8 +397,11 @@ export default {
             this.errors = e;
           });
       } else {
-        console.log(
-          "il faut remplir le nombre de voiture pour chaque portion de route"
+        this.makeToast(
+          "danger",
+          false,
+          "Attention",
+          "Tout les champs doivent être rempli"
         );
       }
     },
@@ -408,7 +421,6 @@ export default {
     },
 
     startTimerBD() {
-
       if (this.greenB && this.greenB) {
         this.BD_color = {
           stroke: `${this.green}`,
@@ -524,7 +536,10 @@ export default {
 }
 
 .simulate {
-  position: absolute;
-
+  float: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  padding-top: 10px;
 }
 </style>
