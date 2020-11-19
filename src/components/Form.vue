@@ -208,8 +208,7 @@ export default {
       timerIntervalBD: null,
     };
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {
     // ///////////////////////////////////////////  COUNT A -> C  /////////////////////////////////////////////////
 
@@ -267,7 +266,16 @@ export default {
   },
 
   methods: {
-    getTiming: function() {
+    makeToast(variant, append = false, title, text) {
+      this.$bvToast.toast(text, {
+        title: title,
+        autoHideDelay: 5000,
+        appendToast: append,
+        variant: variant,
+        solid: true,
+      });
+    },
+    getTimming: function() {
       if (this.carsA && this.carsD && this.carsB && this.carsC) {
         HTTP.get(
           "/feu?a=" +
@@ -307,7 +315,6 @@ export default {
 
               this.startTimerAC();
               this.startTimerBD();
-
             } else {
               console.log(
                 "AC first",
@@ -327,8 +334,11 @@ export default {
             this.errors = e;
           });
       } else {
-        console.log(
-          "il faut remplir le nombre de voiture pour chaque portion de route"
+        this.makeToast(
+          "danger",
+          false,
+          "Attention",
+          "Tout les champs doivent être rempli"
         );
       }
     },
@@ -348,7 +358,6 @@ export default {
     },
 
     startTimerBD() {
-
       if (this.greenB && this.greenB) {
         this.BD_color = {
           stroke: `${this.green}`,
@@ -370,7 +379,7 @@ export default {
     changeLightBD() {
       this.greenB = !this.greenB;
       this.greenD = !this.greenD;
-    }
+    },
   },
 };
 </script>
@@ -476,6 +485,5 @@ export default {
 
 .simulate {
   position: absolute;
-
 }
 </style>
