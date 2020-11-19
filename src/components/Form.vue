@@ -1,5 +1,10 @@
 <template>
   <div>
+<<<<<<< HEAD
+=======
+    <button @click="getTimming">Simuler</button>
+
+>>>>>>> 8d0b1972d17c36717beff81dc4e4b535c7dc26fd
     <b-form inline class="form">
       <!--/////////////////////////////////////////// AC PART /////////////////////////////////////////// -->
       <div class="base-timerAC">
@@ -176,9 +181,12 @@
 </template>
 
 <script>
+import { HTTP } from "../http-constants";
 export default {
   data() {
     return {
+      infoFeu: null,
+
       carsA: null,
       carsB: null,
       carsC: null,
@@ -194,11 +202,11 @@ export default {
       green: "rgb(65, 184, 131)",
       red: "rgb(211, 14, 14 )",
 
-      timeLimitAC: 35,
+      timeLimitAC: 0,
       timePassedAC: 0,
       timerIntervalAC: null,
 
-      timeLimitBD: 40,
+      timeLimitBD: 5,
       timePassedBD: 0,
       timerIntervalBD: null,
     };
@@ -207,7 +215,6 @@ export default {
     this.startTimerAC();
     this.startTimerBD();
   },
-
   computed: {
     // ///////////////////////////////////////////  COUNT A -> C  /////////////////////////////////////////////////
 
@@ -258,8 +265,6 @@ export default {
 
     timeBD() {
       if (this.timePassedBD > this.timeLimitBD) {
-        this.greenB = !this.greenB;
-        this.greenD = !this.greenD;
         return 0;
       }
       return this.timeLimitBD - this.timePassedBD;
@@ -267,6 +272,63 @@ export default {
   },
 
   methods: {
+    getTimming: function() {
+      if (this.carsA && this.carsD && this.carsB && this.carsC) {
+        HTTP.get(
+          "/feu?a=" +
+            this.carsA +
+            "&b=" +
+            this.carsB +
+            "&c=" +
+            this.carsC +
+            "&d=" +
+            this.carsD
+        )
+          .then((response) => {
+            this.infoFeu = response.data;
+            console.log(this.infoFeu);
+
+            // J'ai ça en réponse :
+            //             timeRedLightRoadBD
+            //             timeRedLightRoadAC
+            //             timeGreenLightRoadBD
+            //             timeGreenLightRoadAC
+            if (
+              this.infoFeu.timeGreenLightRoadBD >
+              this.infoFeu.timeGreenLightRoadAC
+            ) {
+              console.log(
+                "DB first",
+                this.infoFeu.timeGreenLightRoadBD,
+                this.infoFeu.timeRedLightRoadBD
+              );
+              this.timeLimitBD = this.infoFeu.timeGreenLightRoadBD;
+              this.greenB = true;
+              this.greenD = true;
+              this.greenA = false;
+              this.greenC = false;
+            } else {
+              console.log(
+                "DB first",
+                this.infoFeu.timeGreenLightRoadAC,
+                this.infoFeu.timeRedLightRoadAC
+              );
+              this.timeLimitAC = this.infoFeu.timeGreenLightRoadAC;
+              this.greenB = false;
+              this.greenD = false;
+              this.greenA = true;
+              this.greenC = true;
+            }
+          })
+          .catch((e) => {
+            this.errors = e;
+          });
+      } else {
+        console.log(
+          "il faut remplir le nombre de voiture pour chaque portion de route"
+        );
+      }
+    },
     startTimerAC() {
       if (this.greenA && this.greenC) {
         this.AC_color = {
@@ -282,6 +344,7 @@ export default {
     },
 
     startTimerBD() {
+
       if (this.greenB && this.greenB) {
         this.BD_color = {
           stroke: `${this.green}`,
