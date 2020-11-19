@@ -1,7 +1,8 @@
 <template>
   <div>
-    <b-button variant="info" class="simulate" @click="getTiming"
-      >Simuler</b-button
+    <b-button variant="primary" class="simulate" @click="getTiming">
+      <span style="font-size: 20px"> Simuler </span> <br> 
+      <b-icon icon="play" aria-hidden="true" font-scale="2"></b-icon> </b-button
     >
 
     <b-form inline class="form">
@@ -537,9 +538,10 @@ export default {
 
 .simulate {
   float: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 300px;
+  margin-top: 200px;
   display: flex;
   padding-top: 10px;
+  position: absolute;
 }
 </style>
