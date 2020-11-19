@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button class="simulate" @click="getTiming">Simuler</button>
+    <b-button variant="info" class="simulate" @click="getTiming"
+      >Simuler</b-button
+    >
 
     <b-form inline class="form">
       <!--/////////////////////////////////////////// AC PART /////////////////////////////////////////// -->
@@ -275,7 +277,7 @@ export default {
         solid: true,
       });
     },
-    getTimming: function() {
+    getTiming: function() {
       if (this.carsA && this.carsD && this.carsB && this.carsC) {
         HTTP.get(
           "/feu?a=" +
@@ -484,6 +486,10 @@ export default {
 }
 
 .simulate {
-  position: absolute;
+  float: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  padding-top: 10px;
 }
 </style>
