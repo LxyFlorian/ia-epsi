@@ -182,6 +182,10 @@ import { HTTP } from "../http-constants";
 export default {
   data() {
     return {
+
+      init : true,
+      twoBD : true,
+      twoAC : true,
       infoFeu: null,
 
       carsA: null,
@@ -206,6 +210,14 @@ export default {
       timeLimitBD: null,
       timePassedBD: 0,
       timerIntervalBD: null,
+
+      nextRedBD: null,
+      nextGreenAC: null,
+   
+      next1 : [ 10 , 6 , 3 , 6],
+      next2 : [  2 , 2 , 14 , 1],
+      next3 : [ 15 , 10 , 5 , 3],
+      next4 : [ 6 , 5 , 9 , 6],
     };
   },
   mounted() {
@@ -232,7 +244,7 @@ export default {
     },
 
     timeAC() {
-      if (this.timePassedAC > this.timeLimitAC) {
+      if (this.timePassedAC >= this.timeLimitAC) {
         return 0;
       }
       return this.timeLimitAC - this.timePassedAC;
@@ -259,10 +271,75 @@ export default {
     },
 
     timeBD() {
-      if (this.timePassedBD > this.timeLimitBD) {
+      if (this.timePassedBD >= this.timeLimitBD) {
         return 0;
       }
       return this.timeLimitBD - this.timePassedBD;
+    },
+  },
+
+  watch: {
+    timePassedAC: async function () {
+      if(this.timePassedBD >= 85 ) {
+
+        this.init = false
+        await clearInterval(this.timerIntervalBD)
+        await clearInterval(this.timerIntervalAC)
+  
+        this.timePassedAC = 0
+        this.timePassedBD = 0
+
+        this.greenB =  !this.greenB;
+        this.greenD =  !this.greenD;
+        this.greenA =  !this.greenA;
+        this.greenC =  !this.greenC;
+
+        console.log("green a : "  + this.greenA);
+        console.log("green b : "  + this.greenB);
+
+        //this.carsA = this.next1[0] 
+        //this.carsB = this.next1[1]   
+        //this.carsC = this.next1[2]   
+        //this.carsD = this.next1[3]   
+
+        this.twoBD = true
+        this.twoAC = true
+
+        console.log("time passed AC : " + this.timePassedAC)
+
+        console.log("time passed BD : " + this.timePassedBD)
+
+        await this.getTiming()
+      }
+
+      if((this.timePassedAC === this.timeLimitBD)  && this.twoBD) {
+        
+        this.twoBD = false
+
+        this.timeLimitBD += this.nextRedBD
+        await clearInterval(this.timerIntervalBD)
+
+        this.greenB = !this.greenB;
+        this.greenD = !this.greenD;
+
+        this.startTimerBD();
+
+      }
+
+      if((this.timePassedAC === this.timeLimitAC)  && this.twoAC) {
+        
+        console.log("TIMEPASSED AC == TIMELIMIT AC retour");
+        this.twoAC = false
+
+        this.timeLimitAC += this.nextGreenAC
+        await clearInterval(this.timerIntervalAC)
+
+        this.greenA = !this.greenA;
+        this.greenC = !this.greenC;
+
+        this.startTimerAC();
+
+      }
     },
   },
 
@@ -280,49 +357,32 @@ export default {
             this.carsD
         )
           .then((response) => {
+
             this.infoFeu = response.data;
             console.log(this.infoFeu);
-
-            // J'ai ça en réponse :
-            //             timeRedLightRoadBD
-            //             timeRedLightRoadAC
-            //             timeGreenLightRoadBD
-            //             timeGreenLightRoadAC
-            if (
-              this.infoFeu.timeGreenLightRoadBD >
-              this.infoFeu.timeGreenLightRoadAC
-            ) {
+ {
               console.log(
-                "DB first",
                 this.infoFeu.timeGreenLightRoadBD,
-                this.infoFeu.timeRedLightRoadBD
+                this.infoFeu.timeRedLightRoadAC
               );
 
               this.timeLimitBD = this.infoFeu.timeGreenLightRoadBD;
-              this.timeLimitAC = this.infoFeu.timeGreenLightRoadAC;
-              this.greenB = true;
-              this.greenD = true;
-              this.greenA = false;
-              this.greenC = false;
+              this.timeLimitAC = this.infoFeu.timeRedLightRoadAC;
+
+              this.nextRedBD = this.infoFeu.timeRedLightRoadBD - 1;
+              this.nextGreenAC = this.infoFeu.timeGreenLightRoadAC;
+
+
+              if (this.init) {
+                this.greenB = true;
+                this.greenD = true;
+                this.greenA = false;
+                this.greenC = false;
+              }
 
               this.startTimerAC();
               this.startTimerBD();
-
-            } else {
-              console.log(
-                "AC first",
-                this.infoFeu.timeGreenLightRoadAC,
-                this.infoFeu.timeRedLightRoadAC
-              );
-              this.timeLimitAC = this.infoFeu.timeGreenLightRoadAC;
-              this.timeLimitBD = this.infoFeu.timeGreenLightRoadBD;
-
-              this.greenB = false;
-              this.greenD = false;
-              this.greenA = true;
-              this.greenC = true;
-            }
-          })
+          }})
           .catch((e) => {
             this.errors = e;
           });
@@ -333,7 +393,6 @@ export default {
       }
     },
     startTimerAC() {
-      console.log("AC TIMER ON ");
       if (this.greenA && this.greenC) {
         this.AC_color = {
           stroke: `${this.green}`,
@@ -343,6 +402,7 @@ export default {
           stroke: `${this.red}`,
         };
       }
+
 
       this.timerIntervalAC = setInterval(() => (this.timePassedAC += 1), 1000);
     },
@@ -358,19 +418,8 @@ export default {
           stroke: `${this.red}`,
         };
       }
-
       this.timerIntervalBD = setInterval(() => (this.timePassedBD += 1), 1000);
     },
-
-    changeLightAC() {
-      this.greenA = !this.greenA;
-      this.greenC = !this.greenC;
-    },
-
-    changeLightBD() {
-      this.greenB = !this.greenB;
-      this.greenD = !this.greenD;
-    }
   },
 };
 </script>
