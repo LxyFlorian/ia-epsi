@@ -1,10 +1,7 @@
 <template>
   <div>
-<<<<<<< HEAD
-=======
-    <button @click="getTimming">Simuler</button>
+    <button class="simulate" @click="getTiming">Simuler</button>
 
->>>>>>> 8d0b1972d17c36717beff81dc4e4b535c7dc26fd
     <b-form inline class="form">
       <!--/////////////////////////////////////////// AC PART /////////////////////////////////////////// -->
       <div class="base-timerAC">
@@ -202,18 +199,16 @@ export default {
       green: "rgb(65, 184, 131)",
       red: "rgb(211, 14, 14 )",
 
-      timeLimitAC: 0,
+      timeLimitAC: null,
       timePassedAC: 0,
       timerIntervalAC: null,
 
-      timeLimitBD: 5,
+      timeLimitBD: null,
       timePassedBD: 0,
       timerIntervalBD: null,
     };
   },
   mounted() {
-    this.startTimerAC();
-    this.startTimerBD();
   },
   computed: {
     // ///////////////////////////////////////////  COUNT A -> C  /////////////////////////////////////////////////
@@ -272,7 +267,7 @@ export default {
   },
 
   methods: {
-    getTimming: function() {
+    getTiming: function() {
       if (this.carsA && this.carsD && this.carsB && this.carsC) {
         HTTP.get(
           "/feu?a=" +
@@ -302,18 +297,26 @@ export default {
                 this.infoFeu.timeGreenLightRoadBD,
                 this.infoFeu.timeRedLightRoadBD
               );
+
               this.timeLimitBD = this.infoFeu.timeGreenLightRoadBD;
+              this.timeLimitAC = this.infoFeu.timeGreenLightRoadAC;
               this.greenB = true;
               this.greenD = true;
               this.greenA = false;
               this.greenC = false;
+
+              this.startTimerAC();
+              this.startTimerBD();
+
             } else {
               console.log(
-                "DB first",
+                "AC first",
                 this.infoFeu.timeGreenLightRoadAC,
                 this.infoFeu.timeRedLightRoadAC
               );
               this.timeLimitAC = this.infoFeu.timeGreenLightRoadAC;
+              this.timeLimitBD = this.infoFeu.timeGreenLightRoadBD;
+
               this.greenB = false;
               this.greenD = false;
               this.greenA = true;
@@ -330,6 +333,7 @@ export default {
       }
     },
     startTimerAC() {
+      console.log("AC TIMER ON ");
       if (this.greenA && this.greenC) {
         this.AC_color = {
           stroke: `${this.green}`,
@@ -394,7 +398,7 @@ export default {
 .timerTextBD {
   position: absolute;
   margin-top: -400px;
-  margin-left: 0px;
+  margin-left: -15px;
 }
 
 .light {
@@ -468,5 +472,10 @@ export default {
 
 ._svg {
   transform: scaleX(-1);
+}
+
+.simulate {
+  position: absolute;
+
 }
 </style>
