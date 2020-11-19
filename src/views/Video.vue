@@ -10,12 +10,11 @@
             utilisé en action
           </h2></b-col
         >
-        <b-col cols="8"
-          ><iframe
-            class="align-right"
-            width="720"
-            height="480"
-            src="https://www.youtube.com/embed/YcU8YrT-77Q?start=61"
+        <b-col cols="8">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/Bb0p_wf3qLs"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
