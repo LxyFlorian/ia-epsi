@@ -28,11 +28,11 @@
       <h3>La problématique</h3>
       <p class="text-justify">
         La circulation dans les villes peut être très dense et parfois mal
-        gérée, ce facteur cause des pertes de temps énorme aux gens et une
+        gérée, ce facteur cause des pertes de temps énormes aux gens et une
         pollution considérable. Pouvons-nous grâce à l’intelligence artificielle
         aider à fluidifier le trafic de manière intelligente et par conséquent
-        améliorer le temps de trajet d’un grand nombre de citoyens et par la
-        même occasion réduire la pollution?
+        améliorer le temps de trajet d’un grand nombre de citoyens mais aussi, par la
+        même occasion, réduire la pollution ?
       </p>
       <h3>Notre réponse</h3>
       <p class="text-justify">

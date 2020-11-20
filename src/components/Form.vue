@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="form_component">
     <b-button variant="primary" class="simulate" @click="getTiming">
       <span style="font-size: 20px"> Simuler </span> <br> 
       <b-icon icon="play" aria-hidden="true" font-scale="2"></b-icon> </b-button
@@ -438,8 +438,8 @@ export default {
 </script>
 
 <style>
-#app {
-  background: url("~@/assets/carrefour.png") no-repeat 640px 210px;
+.form_component {
+  background: url("~@/assets/carrefour.png") no-repeat 640px 154px;
 }
 .form {
   margin-left: 765px;
